@@ -1,45 +1,59 @@
-# Guía de Supervivencia: RAG Assistant (Coatl Lab)
+# Coatl RAG Assistant - Web Edition 🌮🤖
 
-Este documento detalla los cambios, configuraciones y el proceso seguido para transformar el repositorio original en un sistema funcional con soporte para Android/Web.
+Este proyecto es una evolución del [RAGAssistantDemo](https://github.com/KevinhoMorales/RAGAssistantDemo) original de Kevinho Morales, adaptado y optimizado para entornos **Web y Android** como parte del laboratorio de **Cóatl Tech**.
 
-## 1. Configuración de Infraestructura (Firebase)
-- **Proyecto**: `coatl-rag-lab-5b3fd`
-- **Plan**: Blaze (Activado para soportar Functions v2 y Secret Manager).
-- **Secretos**: Se configuró la clave `GOOGLE_GENAI_API_KEY` utilizando Firebase Secret Manager para evitar exponerla en el código.
-- **Base de Datos**: Cloud Firestore habilitado.
+Hemos transformado la experiencia original de iOS (SwiftUI) en una **Web App de alto rendimiento** con un diseño premium, manteniendo la potencia del backend RAG con Gemini.
 
-## 2. El Pivot a Web App (Android Compatibility)
-Dado que no se disponía de Xcode para la versión de iOS, creamos una **Web App** desde cero:
-- **Tecnología**: Vite + React + TypeScript.
-- **Diseño**: Implementamos el estilo **Liquid Glass** usando CSS puro (Vanilla CSS).
-    - Fondos animados con **Mesh Gradients**.
-    - Efectos de desenfoque (backdrop-filter) para las tarjetas.
-    - Tipografía moderna (Inter) y paleta de colores vibrante (Purple/Pink/Blue).
-- **Conectividad**: La web está configurada para llamar directamente a la Cloud Function de Firebase.
+## 🚀 Características principales
+- **Arquitectura RAG (Retrieval-Augmented Generation)**: Utiliza Genkit para conectar Firestore con Gemini 2.5 Flash.
+- **Diseño "Liquid Glass"**: Interfaz moderna con efectos de desenfoque, fondos animados (Mesh Gradients) y micro-interacciones.
+- **Seguridad**: Gestión de secretos mediante Firebase Secret Manager (no hay API Keys expuestas).
+- **Multiplataforma**: Compatible con cualquier navegador móvil (Android/iOS) y escritorio.
 
-## 3. Backend (Cloud Functions v2)
-- **RAG Flow**: El backend lee la colección `menus` de Firestore, construye un prompt aumentado y lo envía a **Gemini 2.5 Flash**.
-- **Seguridad**: Se habilitó CORS para permitir llamadas desde el dominio de la web app.
+## 🏗️ Arquitectura
+1.  **Frontend**: Vite + React + TypeScript (Vanilla CSS).
+2.  **Backend**: Firebase Cloud Functions v2 (Node.js 20).
+3.  **IA**: Google Gemini 2.5 Flash via **Genkit**.
+4.  **Base de Datos**: Cloud Firestore para el almacenamiento de menús y contexto.
 
-## 4. Estado Actual
-- [x] Backend compilado y dependencias instaladas.
-- [x] Secretos configurados.
-- [x] Frontend Web desarrollado e iniciado (`http://localhost:5173`).
-- [/] Despliegue de funciones en proceso (resolviendo tiempos de espera iniciales de Google Cloud).
+## 🛠️ Guía de Inicio Rápido
 
-## Comandos Útiles
-### Ver la Web App
+### Requisitos previos
+- Node.js 20+
+- Firebase CLI instalado
+- Una cuenta de Google Cloud con el Plan Blaze activado.
+
+### Instalación del Proyecto
+```bash
+git clone https://github.com/krvax/Coatl-RAG-Assistant-Web.git
+cd Coatl-RAG-Assistant-Web
+```
+
+### Configuración del Backend
+1.  Instala dependencias:
+    ```bash
+    cd functions
+    npm install
+    ```
+2.  Configura tu API Key de Gemini:
+    ```bash
+    firebase functions:secrets:set GOOGLE_GENAI_API_KEY
+    ```
+3.  Despliega las funciones:
+    ```bash
+    firebase deploy --only functions
+    ```
+
+### Ejecución del Frontend
 ```bash
 cd RAGAssistantWeb
+npm install
 npm run dev
 ```
 
-### Desplegar Cambios en el Backend
-```bash
-firebase deploy --only functions
-```
+## 📝 Notas de Implementación
+- **Pivot de Diseño**: Se reemplazó SwiftUI por una arquitectura web para garantizar la compatibilidad con dispositivos Android sin necesidad de Xcode.
+- **Optimización de Prompt**: El sistema recupera automáticamente los platillos desde la colección `menus` de Firestore para generar respuestas contextuales precisas.
 
-### Ver Logs de la IA
-```bash
-firebase functions:log
-```
+---
+*Desarrollado para el Coatl Lab por krvax, basado en el trabajo original de [KevinhoMorales](https://github.com/KevinhoMorales).*
